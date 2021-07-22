@@ -1,0 +1,39 @@
+.buttonWrapper {
+    display: inline-block;
+  }
+  
+  .button {
+    background: #333;
+    color: #ddd;
+    font-size: 10px;
+    border: 0;
+    padding-top: 0;
+    vertical-align: bottom;
+    height: 34px;
+    width: 34px;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    align-items: center;
+  }
+  
+  .button svg {
+    fill: #ddd;
+    height: 15px;
+    width: 15px;
+  }
+  
+  .button:hover, .button:focus {
+    background: #444;
+    outline: 0; /* reset for :focus */
+  }
+  
+  .active {
+    /* font-weight: 900; */
+    color: #50CB93;
+  }
+  
+  .active svg {
+    fill: #50CB93;
+  }

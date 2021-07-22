@@ -28,10 +28,34 @@ function AddTab() {
     </Container>
   );
 
+  function getDate() {
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    var date = new Date();
+    var y = date.getFullYear();
+    var m = date.getMonth();
+    var d = date.getDate();
+    return `${d} ${monthNames[m]} ${y} `;
+  }
+
   function addTab() {
     let newState = { ...state };
     let id = Math.random().toString(36).slice(-10);
-    newState.notes[id] = { name: "New Note", data: "" };
+    let name = getDate();
+    newState.notes[id] = { name: name, data: "" };
     newState.selectedNote = id;
     dispatch({ type: "NEW_STATE", value: newState });
   }

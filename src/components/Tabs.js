@@ -12,8 +12,9 @@ const Container = styled.div`
   background-color: #222;
   gap: 10px;
   z-index: 5;
+  justify-content: center;
   flex-direction: row;
-  padding: 10px;
+  padding: 10px 0;
 `;
 
 function Tabs() {

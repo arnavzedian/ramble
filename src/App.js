@@ -23,12 +23,12 @@ let Container = styled.div`
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  overflow-y: scroll;
 `;
 
 function App() {
   let [state, dispatch] = useReducer(reducer, getInitialState());
   let [formData, setFormData] = useState(null);
-  console.log(state);
 
   return (
     <Container>

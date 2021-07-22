@@ -1,5 +1,4 @@
 export default function reducer(prevState, action) {
-  console.log(action);
   switch (action.type) {
     case "UPDATE":
       if (action.number) {
