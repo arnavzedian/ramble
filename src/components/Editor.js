@@ -24,7 +24,7 @@ const Title = styled.input`
   outline: none;
   padding: 20px;
   padding-bottom: 0;
-  font-size: 20px;
+  font-size: 30px;
   background-color: transparent;
   border: none;
 `;
