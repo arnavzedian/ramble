@@ -48,15 +48,16 @@ function AddTab() {
     var y = date.getFullYear();
     var m = date.getMonth();
     var d = date.getDate();
-    return `${d} ${monthNames[m]} ${y} `;
+    return `${d} ${monthNames[m]} ${y} ${date.getHours()}:${date.getMinutes()}`;
   }
 
   function addTab() {
     let newState = { ...state };
     let id = Math.random().toString(36).slice(-10);
     let name = getDate();
-    newState.notes[id] = { name: name, data: "" };
+    newState.notes[id] = { name: "Untitled", data: "" };
     newState.selectedNote = id;
+    newState.ranking.unshift(id);
     dispatch({ type: "NEW_STATE", value: newState });
   }
 }

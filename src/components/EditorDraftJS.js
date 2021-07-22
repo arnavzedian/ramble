@@ -19,6 +19,7 @@ import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
 
 import buttonStyles from "./buttonStyles.module.css";
 import toolbarStyles from "./toolbarStyles.module.css";
+import StrikeThrough from "./StrikeThroughDraft";
 
 import {
   ItalicButton,
@@ -33,6 +34,12 @@ import {
   BlockquoteButton,
   CodeBlockButton,
 } from "@draft-js-plugins/buttons";
+
+const customStyleMap = {
+  STRIKETHROUGH: {
+    textDecoration: "line-through",
+  },
+};
 
 const ToolbarButtonContainer = styled.div`
   display: flex;
@@ -254,6 +261,7 @@ function MyEditor() {
           ref={(element) => {
             editor.current = element;
           }}
+          customStyleMap={customStyleMap}
           onTab={onTab}
           plugins={plugins}
           handleKeyCommand={handleKeyCommand}
@@ -274,6 +282,9 @@ function MyEditor() {
                 <HeadlineThreeButton {...externalProps} />
                 <BlockquoteButton {...externalProps} />
                 <CodeBlockButton {...externalProps} />
+                <StrikeThrough
+                  {...{ editorState, setEditorState, RichUtils }}
+                />
               </ToolbarButtonContainer>
             )
           }

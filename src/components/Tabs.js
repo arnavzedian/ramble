@@ -3,6 +3,7 @@ import Context from "../Context";
 import styled from "styled-components";
 import Tab from "./Tab";
 import AddTab from "./AddTab";
+import MoreButton from "./MoreButton";
 
 const Container = styled.div`
   position: absolute;
@@ -13,8 +14,9 @@ const Container = styled.div`
   gap: 10px;
   z-index: 5;
   justify-content: center;
+  overflow-x: auto;
   flex-direction: row;
-  padding: 10px 0;
+  padding: 10px 10px;
 `;
 
 function Tabs() {
@@ -23,9 +25,15 @@ function Tabs() {
 
   list.push(<AddTab />);
 
-  for (let noteID in state.notes) {
-    list.push(<Tab key={noteID} noteID={noteID} />);
+  let limit = window.innerWidth / 200;
+
+  let count = 0;
+  for (let noteID of state.ranking) {
+    count++;
+    if (count < limit) list.push(<Tab key={noteID} noteID={noteID} />);
   }
+
+  if (state.ranking.length > limit) list.push(<MoreButton />);
 
   return <Container>{list}</Container>;
 }

@@ -12,8 +12,9 @@ function getInitialState() {
   let data = localStorage.getItem("notes-data");
   if (!data)
     return {
-      notes: { A: { name: "First Note", data: null } },
-      selectedNote: "A",
+      ranking: [],
+      notes: {},
+      selectedNote: null,
     };
   return JSON.parse(data);
 }

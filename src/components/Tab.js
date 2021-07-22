@@ -2,6 +2,7 @@ import { useContext } from "react";
 import Context from "../Context";
 import styled from "styled-components";
 import { MdClose } from "react-icons/md";
+import setCurrentNote from "../controller/setCurrentNote";
 
 const Container = styled.button`
   width: 130px;
@@ -45,7 +46,13 @@ function Tab({ noteID }) {
   return (
     <Container
       isActive={noteID == state.selectedNote}
-      onClick={isSelected() ? null : setCurrentNote}
+      onClick={
+        isSelected()
+          ? null
+          : () => {
+              setCurrentNote({ state, dispatch, noteID });
+            }
+      }
     >
       <Name>{note.name}</Name>
       {noteID == state.selectedNote ? (
@@ -57,10 +64,6 @@ function Tab({ noteID }) {
       )}
     </Container>
   );
-
-  function setCurrentNote() {
-    dispatch({ type: "UPDATE", field: "selectedNote", value: noteID });
-  }
 
   function shouldDelete() {
     let form = {
@@ -87,23 +90,21 @@ function Tab({ noteID }) {
 
     delete newState.notes[noteID];
 
+    newState.ranking = newState.ranking.filter((e) => e !== noteID);
+
     let IDs = Object.keys(newState.notes);
 
+    let newNoteID = null;
     if (newState.selectedNote == noteID) {
       if (IDs[0]) {
         console.log("Deleted tab");
-        newState.selectedNote = IDs[0];
-      } else {
-        newState.selectedNote = null;
+        newNoteID = IDs[0];
       }
     }
 
     console.log(newState);
 
-    dispatch({
-      type: "NEW_STATE",
-      value: newState,
-    });
+    setCurrentNote({ state: newState, dispatch, noteID: newNoteID });
   }
 }
 
