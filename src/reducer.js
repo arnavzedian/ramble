@@ -1,3 +1,5 @@
+import localforage from "localforage";
+
 export default function reducer(prevState, action) {
   switch (action.type) {
     case "UPDATE":
@@ -16,6 +18,6 @@ export default function reducer(prevState, action) {
 }
 
 function save(data) {
-  localStorage.setItem("notes-data", JSON.stringify(data));
+  localforage.setItem("notes-data", data);
   return data;
 }

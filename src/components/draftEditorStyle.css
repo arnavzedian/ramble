@@ -1,3 +1,12 @@
 .public-DraftEditorPlaceholder-root{
   opacity: 0.5;
 }
+
+figure{
+  margin: 0;
+}
+
+img{
+  width: 100%;
+  object-fit: cover;
+}

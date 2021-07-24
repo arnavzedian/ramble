@@ -5,7 +5,8 @@ import { FiPlus } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
 import getCurrentBlock from "../controller/getCurrentBlock";
 import StyleButton from "./StyleButton";
-
+import imageUploadClicked from "../controller/imageUploadClicked";
+import { CgImage } from "react-icons/cg";
 const Container = styled.div`
   height: 20px;
   width: 20px;
@@ -88,6 +89,13 @@ function ChangeBlockType({ editorState, setEditorState, RichUtils }) {
           coverEntireBlock={true}
           callback={callback}
           newStyle={"header-three"}
+          {...{ editorState, setEditorState, RichUtils }}
+        />
+        <StyleButton
+          Icon={CgImage}
+          coverEntireBlock={true}
+          callback={callback}
+          actionFunction={imageUploadClicked}
           {...{ editorState, setEditorState, RichUtils }}
         />
       </ButtonsContainer>

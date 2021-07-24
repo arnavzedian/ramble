@@ -15,6 +15,7 @@ import createInlineToolbarPlugin, {
   Separator,
 } from "@draft-js-plugins/inline-toolbar";
 
+import createImagePlugin from "draft-js-image-plugin";
 import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
 import { MdFormatStrikethrough } from "react-icons/md";
 import buttonStyles from "./buttonStyles.module.css";
@@ -36,6 +37,8 @@ import {
   CodeBlockButton,
 } from "@draft-js-plugins/buttons";
 import ChangeBlockType from "./ChangeBlockType";
+
+const imagePlugin = createImagePlugin();
 
 const customStyleMap = {
   STRIKETHROUGH: {
@@ -88,7 +91,7 @@ const inlineToolbarPlugin = createInlineToolbarPlugin({
   theme: { buttonStyles, toolbarStyles },
 });
 const { InlineToolbar } = inlineToolbarPlugin;
-const plugins = [inlineToolbarPlugin];
+const plugins = [inlineToolbarPlugin, imagePlugin];
 
 function MyEditor() {
   let { state, dispatch } = useContext(Context);

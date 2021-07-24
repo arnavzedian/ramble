@@ -5,18 +5,20 @@ import reducer from "./reducer";
 import Tabs from "./components/Tabs";
 // import Editor from "./components/Editor";
 import Editor from "./components/EditorDraftJS";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
 import DynamicForm from "./components/DynamicForm";
-function getInitialState() {
-  let data = localStorage.getItem("notes-data");
+import localforage from "localforage";
+
+async function getInitialState() {
+  let data = await localforage.getItem("notes-data");
   if (!data)
     return {
       ranking: [],
       notes: {},
       selectedNote: null,
     };
-  return JSON.parse(data);
+  return data;
 }
 
 let Container = styled.div`
@@ -28,8 +30,16 @@ let Container = styled.div`
 `;
 
 function App() {
-  let [state, dispatch] = useReducer(reducer, getInitialState());
+  let [state, dispatch] = useReducer(reducer, null);
   let [formData, setFormData] = useState(null);
+
+  useEffect(() => {
+    getInitialState().then((data) => {
+      dispatch({ type: "NEW_STATE", value: data });
+    });
+  }, []);
+
+  if (!state) return [];
 
   return (
     <Container>

@@ -26,6 +26,7 @@ function StyleButton({
   coverEntireBlock,
   Icon,
   callback,
+  actionFunction,
 }) {
   if (!Icon) {
     console.warn("Icon undefiend");
@@ -74,6 +75,15 @@ function StyleButton({
 
   function doStyling(e) {
     e.preventDefault();
+
+    if (actionFunction) {
+      actionFunction({
+        RichUtils,
+        setEditorState,
+        editorState,
+      });
+      callback();
+    }
 
     let newState;
 
