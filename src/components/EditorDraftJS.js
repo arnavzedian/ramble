@@ -9,18 +9,19 @@ import {
   convertToRaw,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
-
+import "./draftEditorStyle.css";
 import Editor from "@draft-js-plugins/editor";
 import createInlineToolbarPlugin, {
   Separator,
 } from "@draft-js-plugins/inline-toolbar";
 
 import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
-
+import { MdFormatStrikethrough } from "react-icons/md";
 import buttonStyles from "./buttonStyles.module.css";
 import toolbarStyles from "./toolbarStyles.module.css";
-import StrikeThrough from "./StrikeThroughDraft";
 
+import StyleButton from "./StyleButton";
+import getCurrentBlock from "../controller/getCurrentBlock";
 import {
   ItalicButton,
   BoldButton,
@@ -34,6 +35,7 @@ import {
   BlockquoteButton,
   CodeBlockButton,
 } from "@draft-js-plugins/buttons";
+import ChangeBlockType from "./ChangeBlockType";
 
 const customStyleMap = {
   STRIKETHROUGH: {
@@ -48,25 +50,23 @@ const ToolbarButtonContainer = styled.div`
 
 const Title = styled.input`
   width: 100%;
-  height: 60px;
+  height: 70px;
   overflow: hidden;
   color: #fff;
   outline: none;
-
-  padding-bottom: 0;
-  font-size: 20px;
+  font-weight: 900;
+  font-size: 30px;
+  padding: 20px 0;
   background-color: transparent;
   border: none;
 `;
 
 const Container = styled.div`
   width: 100%;
-
-  overflow: hidden;
+  position: relative;
   resize: none;
   color: #fff;
   outline: none;
-  overflow-y: scroll;
   font-size: 15px;
   background-color: transparent;
   border: none;
@@ -81,19 +81,19 @@ const Container = styled.div`
 const Div = styled.div`
   width: 62vw;
   margin-left: 19vw;
+  position: relative;
 `;
 
 const inlineToolbarPlugin = createInlineToolbarPlugin({
   theme: { buttonStyles, toolbarStyles },
 });
-// theme: { buttonStyles, toolbarStyles },
 const { InlineToolbar } = inlineToolbarPlugin;
 const plugins = [inlineToolbarPlugin];
 
 function MyEditor() {
   let { state, dispatch } = useContext(Context);
-
   let [editorState, setEditorState] = useState(getState());
+  const [, forceRender] = useState({});
 
   useEffect(() => {
     setEditorState(getState());
@@ -179,6 +179,7 @@ function MyEditor() {
       return "handled";
     }
 
+    // forceRender({});
     return "not-handled";
   }
 
@@ -206,14 +207,6 @@ function MyEditor() {
     return EditorState.push(editorState, newContentState, "change-block-type");
   };
 
-  function getCurrentBlock() {
-    const contentState = editorState.getCurrentContent();
-    const selectionState = editorState.getSelection();
-    const key = selectionState.getStartKey();
-    const blockMap = contentState.getBlockMap();
-    return blockMap.get(key);
-  }
-
   function handleBeforeInput(str) {
     if (str !== " ") {
       return false;
@@ -239,7 +232,7 @@ function MyEditor() {
   };
 
   function onTab(e) {
-    let block = getCurrentBlock();
+    let block = getCurrentBlock(editorState);
     if (block) console.log(block.type);
 
     if (block.type == "unstyled") {
@@ -253,7 +246,8 @@ function MyEditor() {
 
   return (
     <Div>
-      <Title onChange={changeName} value={note.name} />
+      <ChangeBlockType {...{ editorState, setEditorState, RichUtils }} />
+      <Title placeholder={"Title"} onChange={changeName} value={note.name} />
       <Container onClick={focus}>
         <Editor
           editorState={editorState}
@@ -269,6 +263,7 @@ function MyEditor() {
           onChange={onChange}
           placeholder="Type Here"
         />
+
         <InlineToolbar>
           {
             // may be use React.Fragment instead of div to improve perfomance after React 16
@@ -282,7 +277,9 @@ function MyEditor() {
                 <HeadlineThreeButton {...externalProps} />
                 <BlockquoteButton {...externalProps} />
                 <CodeBlockButton {...externalProps} />
-                <StrikeThrough
+                <StyleButton
+                  Icon={MdFormatStrikethrough}
+                  newStyle={"STRIKETHROUGH"}
                   {...{ editorState, setEditorState, RichUtils }}
                 />
               </ToolbarButtonContainer>

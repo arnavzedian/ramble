@@ -55,7 +55,7 @@ function AddTab() {
     let newState = { ...state };
     let id = Math.random().toString(36).slice(-10);
     let name = getDate();
-    newState.notes[id] = { name: "Untitled", data: "" };
+    newState.notes[id] = { name: "", data: "" };
     newState.selectedNote = id;
     newState.ranking.unshift(id);
     dispatch({ type: "NEW_STATE", value: newState });
