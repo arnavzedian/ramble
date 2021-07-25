@@ -8,11 +8,17 @@ function uploadImage() {
     fileInput.setAttribute("multiple", true);
     fileInput.click();
 
+    const toBase64 = (file) =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+
     function doUpload({ target }) {
       const [file] = target.files;
-
-      let base64 = URL.createObjectURL(file);
-      resolve(base64);
+      toBase64(file).then(resolve);
     }
   });
 }

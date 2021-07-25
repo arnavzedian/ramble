@@ -7,6 +7,8 @@ import getCurrentBlock from "../controller/getCurrentBlock";
 import StyleButton from "./StyleButton";
 import imageUploadClicked from "../controller/imageUploadClicked";
 import { CgImage } from "react-icons/cg";
+import { AiOutlineUnorderedList, AiOutlineOrderedList } from "react-icons/ai";
+import { BiTask } from "react-icons/bi";
 const Container = styled.div`
   height: 20px;
   width: 20px;
@@ -21,8 +23,9 @@ const Container = styled.div`
 `;
 
 const MainContainer = styled.div`
-  position: absolute;
-  left: -30px;
+  position: fixed;
+  left: 16vw;
+  z-index: 555;
   display: flex;
   transition: 0.2s ease-in;
   flex-direction: row;
@@ -92,10 +95,39 @@ function ChangeBlockType({ editorState, setEditorState, RichUtils }) {
           {...{ editorState, setEditorState, RichUtils }}
         />
         <StyleButton
+          Icon={"H3"}
+          coverEntireBlock={true}
+          callback={callback}
+          newStyle={"header-three"}
+          {...{ editorState, setEditorState, RichUtils }}
+        />
+        <StyleButton
+          Icon={AiOutlineUnorderedList}
+          coverEntireBlock={true}
+          callback={callback}
+          newStyle={"unordered-list-item"}
+          {...{ editorState, setEditorState, RichUtils }}
+        />
+        <StyleButton
+          Icon={AiOutlineOrderedList}
+          coverEntireBlock={true}
+          callback={callback}
+          newStyle={"ordered-list-item"}
+          {...{ editorState, setEditorState, RichUtils }}
+        />
+
+        <StyleButton
           Icon={CgImage}
           coverEntireBlock={true}
           callback={callback}
           actionFunction={imageUploadClicked}
+          {...{ editorState, setEditorState, RichUtils }}
+        />
+        <StyleButton
+          Icon={BiTask}
+          coverEntireBlock={true}
+          callback={callback}
+          newStyle={"todo"}
           {...{ editorState, setEditorState, RichUtils }}
         />
       </ButtonsContainer>
@@ -117,13 +149,17 @@ function ChangeBlockType({ editorState, setEditorState, RichUtils }) {
           let ele = range.startContainer;
           if (ele) {
             y = ele.getBoundingClientRect().top;
-            console.log("rect  0", y, range);
+            // console.log("rect  0", y, range);
           }
         }
       } else {
-        console.log("range count 0");
+        // console.log("range count 0");
       }
     }
+
+    let scrollParent = document.querySelector(".editorScrollParent");
+    // console.log(scrollParent);
+    // y += scrollParent.scrollTop;
     return y;
   }
 
@@ -132,7 +168,7 @@ function ChangeBlockType({ editorState, setEditorState, RichUtils }) {
     let block = getCurrentBlock(editorState);
     if (block) {
       if (block.getText()) {
-        console.log(block.getText());
+        // console.log(block.getText());
         show = false;
       }
     }

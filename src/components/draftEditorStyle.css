@@ -9,4 +9,26 @@ figure{
 img{
   width: 100%;
   object-fit: cover;
+  border-radius: 15px;
+}
+
+.block {
+  /* margin-bottom: 10px; */
+}
+
+.block-todo {
+  position: relative;
+  padding: 10px 25px;
+
+
+}
+
+.block-todo input[type=checkbox] {
+  position: absolute;
+  top: 10px;
+  left: 0px;
+  height: 20px;
+  cursor: pointer;
+  margin: 0;
+  width: 20px;
 }

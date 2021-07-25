@@ -1,11 +1,14 @@
 import { useContext, useEffect, useRef, useState, useMemo } from "react";
 import Context from "../Context";
+import { Map } from "immutable";
+import TodoBlock from "./TodoBlock";
 import styled from "styled-components";
 import {
   EditorState,
   RichUtils,
   Modifier,
   convertFromRaw,
+  DefaultDraftBlockRenderMap,
   convertToRaw,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
@@ -17,7 +20,7 @@ import createInlineToolbarPlugin, {
 
 import createImagePlugin from "draft-js-image-plugin";
 import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
-import { MdFormatStrikethrough } from "react-icons/md";
+import { MdFormatStrikethrough, MdSignalCellularNull } from "react-icons/md";
 import buttonStyles from "./buttonStyles.module.css";
 import toolbarStyles from "./toolbarStyles.module.css";
 
@@ -37,6 +40,27 @@ import {
   CodeBlockButton,
 } from "@draft-js-plugins/buttons";
 import ChangeBlockType from "./ChangeBlockType";
+
+import { RiText } from "react-icons/ri";
+import { MdTitle } from "react-icons/md";
+const TODO_BLOCK = "todo";
+
+export const BLOCK_TYPE = {
+  // This is used to represent a normal text block (paragraph).
+  UNSTYLED: "unstyled",
+  HEADER_ONE: "header-one",
+  HEADER_TWO: "header-two",
+  HEADER_THREE: "header-three",
+  HEADER_FOUR: "header-four",
+  HEADER_FIVE: "header-five",
+  HEADER_SIX: "header-six",
+  UNORDERED_LIST_ITEM: "unordered-list-item",
+  ORDERED_LIST_ITEM: "ordered-list-item",
+  BLOCKQUOTE: "blockquote",
+  CODE: "code-block",
+  // This represents a "custom" block, not for rich text, with arbitrary content.
+  ATOMIC: "atomic",
+};
 
 const imagePlugin = createImagePlugin();
 
@@ -85,29 +109,44 @@ const Div = styled.div`
   width: 62vw;
   margin-left: 19vw;
   position: relative;
+  padding: 100px 0;
+  /* border-bottom: 1px solid #333; */
 `;
 
 const inlineToolbarPlugin = createInlineToolbarPlugin({
   theme: { buttonStyles, toolbarStyles },
 });
+
 const { InlineToolbar } = inlineToolbarPlugin;
 const plugins = [inlineToolbarPlugin, imagePlugin];
 
-function MyEditor() {
+function MyEditor({ noteID }) {
   let { state, dispatch } = useContext(Context);
-  let [editorState, setEditorState] = useState(getState());
-  const [, forceRender] = useState({});
-
-  useEffect(() => {
-    setEditorState(getState());
-  }, [state.selectedNote]);
-
-  let note = state.notes[state.selectedNote];
+  let [editorState, updateEditorState] = useState(getState());
 
   const editor = useRef(null);
 
+  let blockRenderMap = null;
+
+  useEffect(() => {
+    blockRenderMap = new Map({
+      [TODO_BLOCK]: {
+        element: "div",
+      },
+    }).merge(DefaultDraftBlockRenderMap);
+
+    let note = state.notes[noteID];
+    if (note) updateEditorState(getState());
+  }, [noteID]);
+
+  // if (!blockRenderMap) return [];
+  let note = state.notes[noteID];
+
+  if (!note) return [];
+
   function getState() {
-    let note = state.notes[state.selectedNote];
+    let note = state.notes[noteID];
+    if (!note) return {};
     if (note.data) {
       return EditorState.createWithContent(convertFromRaw(note.data));
     } else {
@@ -115,9 +154,17 @@ function MyEditor() {
     }
   }
 
+  function hidePlaceholder() {
+    const contentState = editorState.getCurrentContent();
+    return (
+      contentState.hasText() ||
+      contentState.getBlockMap().first().getType() !== BLOCK_TYPE.UNSTYLED
+    );
+  }
+
   function changeName(e) {
     let newState = { ...state };
-    newState.notes[state.selectedNote].name = e.target.value;
+    newState.notes[noteID].name = e.target.value;
     dispatch({ type: "NEW_STATE", value: newState });
   }
 
@@ -127,13 +174,13 @@ function MyEditor() {
 
     let newState = { ...state };
 
-    newState.notes[state.selectedNote].data = data;
+    newState.notes[noteID].data = data;
 
     dispatch({ type: "NEW_STATE", value: newState });
   }
 
-  function onChange(editorState) {
-    setEditorState(editorState);
+  function setEditorState(editorState) {
+    updateEditorState(editorState);
     saveState(editorState);
   }
 
@@ -172,13 +219,34 @@ function MyEditor() {
     // }
   };
 
+  function getEditorState() {
+    return editorState;
+  }
+
+  const getBlockRendererFn = (block) => {
+    const type = block.getType();
+    console.log(type, blockRenderMap);
+    switch (type) {
+      case TODO_BLOCK:
+        return {
+          component: TodoBlock,
+          props: {
+            onChange: setEditorState,
+            getEditorState: getEditorState,
+          },
+        };
+      default:
+        return null;
+    }
+  };
+
   function handleKeyCommand(command, editorState) {
     const newState = RichUtils.handleKeyCommand(editorState, command);
 
     console.log(editorState);
 
     if (newState) {
-      onChange(newState);
+      setEditorState(newState);
       return "handled";
     }
 
@@ -186,7 +254,26 @@ function MyEditor() {
     return "not-handled";
   }
 
-  const resetBlockType = (editorState) => {
+  // const addEmptyBlock = (editorState) => {
+  //   const newBlock = new ContentBlock({
+  //     key: genKey(),
+  //     type: "unstyled",
+  //     text: "",
+  //     characterList: List(),
+  //   });
+
+  //   const contentState = editorState.getCurrentContent();
+  //   const newBlockMap = contentState.getBlockMap().set(newBlock.key, newBlock);
+
+  //   setEditorState(
+  //     EditorState.push(
+  //       editorState,
+  //       ContentState.createFromBlockArray(newBlockMap.toArray())
+  //     )
+  //   );
+  // };
+
+  const resetBlockType = (editorState, type, data = {}) => {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
     const key = selectionState.getStartKey();
@@ -195,8 +282,8 @@ function MyEditor() {
 
     const newBlock = block.merge({
       text: "",
-      type: "unordered-list-item",
-      data: {},
+      type: type,
+      data: data,
     });
 
     const newContentState = contentState.merge({
@@ -211,22 +298,39 @@ function MyEditor() {
   };
 
   function handleBeforeInput(str) {
-    if (str !== " ") {
-      return false;
-    }
-
-    /* Get the selection */
+    if (str !== " ") return "not-handled";
     const selection = editorState.getSelection();
 
-    /* Get the current block */
     const currentBlock = editorState
       .getCurrentContent()
       .getBlockForKey(selection.getStartKey());
     const blockLength = currentBlock.getLength();
+
     if (blockLength === 1 && currentBlock.getText() === "*") {
-      setEditorState(resetBlockType(editorState));
+      setEditorState(resetBlockType(editorState, "unordered-list-item"));
+      return "handled";
+    } else if (blockLength === 1 && currentBlock.getText() === "1") {
+      setEditorState(resetBlockType(editorState, "ordered-list-item"));
+      return "handled";
+    } else if (blockLength === 2 && currentBlock.getText() === "1.") {
+      setEditorState(resetBlockType(editorState, "ordered-list-item"));
+      return "handled";
+    } else if (blockLength === 1 && currentBlock.getText() === "#") {
+      setEditorState(resetBlockType(editorState, "header-one"));
+      return "handled";
+    } else if (blockLength === 2 && currentBlock.getText() === "##") {
+      setEditorState(resetBlockType(editorState, "header-two"));
+      return "handled";
+    } else if (blockLength === 3 && currentBlock.getText() === "###") {
+      setEditorState(resetBlockType(editorState, "header-three"));
+      return "handled";
+    } else if (blockLength === 2 && currentBlock.getText() === "[]") {
+      setEditorState(
+        resetBlockType(editorState, TODO_BLOCK, { checked: false })
+      );
       return "handled";
     }
+
     return "not-handled";
   }
 
@@ -247,9 +351,22 @@ function MyEditor() {
     }
   }
 
+  // function isActive() {
+  //   if (noteID == state.selectedNote) return true;
+  //   return false;
+  // }
+
+  function blockStyleFn(block) {
+    switch (block.getType()) {
+      case TODO_BLOCK:
+        return "block block-todo";
+      default:
+        return "block";
+    }
+  }
+
   return (
-    <Div>
-      <ChangeBlockType {...{ editorState, setEditorState, RichUtils }} />
+    <Div data-note_id={noteID}>
       <Title placeholder={"Title"} onChange={changeName} value={note.name} />
       <Container onClick={focus}>
         <Editor
@@ -261,12 +378,17 @@ function MyEditor() {
           customStyleMap={customStyleMap}
           onTab={onTab}
           plugins={plugins}
+          blockStyleFn={blockStyleFn}
+          blockRendererFn={getBlockRendererFn}
+          blockRenderMap={blockRenderMap}
           handleKeyCommand={handleKeyCommand}
           handleBeforeInput={handleBeforeInput}
-          onChange={onChange}
-          placeholder="Type Here"
+          onChange={setEditorState}
+          placeholder={hidePlaceholder() ? "" : "Type Here"}
         />
-
+        {/* {isActive() ? ( */}
+        {/* <div> */}{" "}
+        <ChangeBlockType {...{ editorState, setEditorState, RichUtils }} />
         <InlineToolbar>
           {
             // may be use React.Fragment instead of div to improve perfomance after React 16
@@ -289,6 +411,10 @@ function MyEditor() {
             )
           }
         </InlineToolbar>
+        {/* </div> */}
+        {/* ) : (
+          []
+        )} */}
       </Container>
     </Div>
   );

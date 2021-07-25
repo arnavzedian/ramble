@@ -51,7 +51,7 @@ function StyleButton({
     const block = blockMap.get(key);
 
     const newBlock = block.merge({
-      text: "",
+      text: block.getText() ? block.getText() : "",
       type: newStyle,
       data: {},
     });
