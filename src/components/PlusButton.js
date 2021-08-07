@@ -34,7 +34,7 @@ const MainContainer = styled.div`
 `;
 
 const ButtonsContainer = styled.div`
-  margin-left: 8px;
+  margin-left: 35px;
   z-index: 55;
   margin-top: -8px;
   display: flex;
