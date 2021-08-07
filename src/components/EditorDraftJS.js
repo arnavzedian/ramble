@@ -111,8 +111,11 @@ const Div = styled.div`
   width: 46vw;
   margin-left: 27vw;
   position: relative;
-  padding: 100px 0;
+  padding: 100px 15px;
   font-size: 16px;
+  margin-top: 25px;
+  border-left: 1px solid #444;
+  border-right: 1px solid #444;
 `;
 
 const inlineToolbarPlugin = createInlineToolbarPlugin({
