@@ -41,15 +41,25 @@ let Heading = styled.h1`
   width: 100%;
   font-size: 45px;
   text-align: center;
+
+  @media (max-width: 700px) {
+    font-size: 25px;
+    width: 90%;
+  }
 `;
 
 let Description = styled.div`
   font-family: sacramento;
-  width: 100%;
+
   text-align: center;
   font-size: 35px;
   width: 38vw;
   opacity: 0.5;
+
+  @media (max-width: 700px) {
+    font-size: 22px;
+    width: 90%;
+  }
 `;
 
 function Intro() {
