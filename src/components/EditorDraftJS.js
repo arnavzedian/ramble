@@ -39,7 +39,7 @@ import {
   BlockquoteButton,
   CodeBlockButton,
 } from "@draft-js-plugins/buttons";
-import ChangeBlockType from "./ChangeBlockType";
+import PlusButton from "./PlusButton";
 
 import { RiText } from "react-icons/ri";
 import { MdTitle } from "react-icons/md";
@@ -79,10 +79,12 @@ const Title = styled.input`
   width: 100%;
   height: 70px;
   overflow: hidden;
+  text-align: center;
   color: #fff;
   outline: none;
   font-weight: 900;
-  font-size: 30px;
+  font-size: 35px;
+  margin-bottom: 25px;
   padding: 20px 0;
   background-color: transparent;
   border: none;
@@ -94,11 +96,11 @@ const Container = styled.div`
   resize: none;
   color: #fff;
   outline: none;
-  font-size: 15px;
+  font-size: 16px;
   background-color: transparent;
   border: none;
 
-  min-height: 200px;
+  min-height: 50vh;
 
   :global(.public-DraftEditor-content) {
     min-height: 140px;
@@ -106,11 +108,11 @@ const Container = styled.div`
 `;
 
 const Div = styled.div`
-  width: 62vw;
-  margin-left: 19vw;
+  width: 46vw;
+  margin-left: 27vw;
   position: relative;
   padding: 100px 0;
-  /* border-bottom: 1px solid #333; */
+  font-size: 16px;
 `;
 
 const inlineToolbarPlugin = createInlineToolbarPlugin({
@@ -388,7 +390,7 @@ function MyEditor({ noteID }) {
         />
         {/* {isActive() ? ( */}
         {/* <div> */}{" "}
-        <ChangeBlockType {...{ editorState, setEditorState, RichUtils }} />
+        <PlusButton {...{ editorState, setEditorState, RichUtils }} />
         <InlineToolbar>
           {
             // may be use React.Fragment instead of div to improve perfomance after React 16

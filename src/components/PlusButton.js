@@ -24,7 +24,7 @@ const Container = styled.div`
 
 const MainContainer = styled.div`
   position: fixed;
-  left: 16vw;
+  left: 24vw;
   z-index: 555;
   display: flex;
   transition: 0.2s ease-in;
@@ -45,7 +45,7 @@ const ButtonsContainer = styled.div`
   transform: ${({ active }) => (active ? "scale(1)" : "scale(0)")};
 `;
 
-function ChangeBlockType({ editorState, setEditorState, RichUtils }) {
+function PlusButton({ editorState, setEditorState, RichUtils }) {
   const { state, dispatch, setFormData } = useContext(Context);
   let [active, setActive] = useState(false);
   let [posY, setPosY] = useState(false);
@@ -177,4 +177,4 @@ function ChangeBlockType({ editorState, setEditorState, RichUtils }) {
   }
 }
 
-export default ChangeBlockType;
+export default PlusButton;

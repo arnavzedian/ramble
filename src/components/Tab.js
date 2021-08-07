@@ -54,7 +54,7 @@ function Tab({ noteID }) {
             }
       }
     >
-      <Name>{note.name}</Name>
+      <Name>{note.name ? note.name : "Untitled"}</Name>
       {noteID == state.selectedNote ? (
         <Cross onClick={shouldDelete}>
           <MdClose />
