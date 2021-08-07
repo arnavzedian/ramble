@@ -6,7 +6,7 @@ import AddTab from "./AddTab";
 import MoreButton from "./MoreButton";
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   display: flex;
