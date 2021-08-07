@@ -79,7 +79,7 @@ const Title = styled.input`
   width: 100%;
   height: 70px;
   overflow: hidden;
-  text-align: center;
+
   color: #fff;
   outline: none;
   font-weight: 900;
