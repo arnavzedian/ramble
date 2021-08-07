@@ -33,8 +33,9 @@ function MoreButton() {
     let form = { headings: ["All Notes"], buttons: [] };
 
     for (let noteID of state.ranking) {
+      let name = state.notes[noteID].name;
       form.buttons.push({
-        name: state.notes[noteID].name,
+        name: name ? name : "untitled",
         onClick: () => {
           setFormData(null);
           setCurrentNote({ state, dispatch, noteID });
