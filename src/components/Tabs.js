@@ -25,7 +25,7 @@ function Tabs() {
 
   list.push(<AddTab />);
 
-  let limit = window.innerWidth / 200;
+  let limit = window.innerWidth / 150;
 
   let count = 0;
   for (let noteID of state.ranking) {

@@ -31,6 +31,9 @@ const MainContainer = styled.div`
   flex-direction: row;
   top: ${({ top }) => (top ? top + "px" : "0px")};
   visibility: ${({ visibility }) => (visibility ? visibility : "none")};
+  @media (max-width: 800px) {
+    display: none;
+  }
 `;
 
 const ButtonsContainer = styled.div`

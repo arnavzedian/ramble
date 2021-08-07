@@ -116,6 +116,12 @@ const Div = styled.div`
   margin-top: 25px;
   border-left: 1px solid #444;
   border-right: 1px solid #444;
+
+  @media (max-width: 800px) {
+    border: none;
+    margin: 0;
+    width: 100vw;
+  }
 `;
 
 const inlineToolbarPlugin = createInlineToolbarPlugin({
