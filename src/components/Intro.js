@@ -13,7 +13,7 @@ let Logo = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 25px;
+  margin-top: 50px;
   align-items: center;
   width: 100%;
 `;
@@ -23,17 +23,19 @@ let LogoImg = styled.img`
   object-fit: contain;
   width: 35px;
   margin-right: 15px;
+  margin-bottom: -5px;
 `;
 
 let LogoText = styled.div`
-  font-size: 35px;
+  font-size: 45px;
+  line-height: 0;
   font-weight: 900;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 `;
 
 let Hero = styled.div`
-  margin-top: 75px;
+  margin-top: 180px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -42,7 +44,7 @@ let Hero = styled.div`
 
 let Heading = styled.h1`
   width: 80%;
-  font-size: 75px;
+  font-size: 69px;
   text-align: center;
   margin-bottom: 15px;
   font-family: Sanchez, Georgia, "Times New Roman", Times, serif;
@@ -68,7 +70,7 @@ let HeroButton = styled.h1`
 let Description = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  width: 62%;
+  width: 80%;
   text-align: center;
   font-size: 25px;
   opacity: 0.5;
@@ -90,7 +92,7 @@ function Intro() {
       </Logo>
 
       <Hero>
-        <Heading>Fast minimal note taking</Heading>
+        <Heading>FAST . MINIMAL . NOTE TAKING</Heading>
         <Description>
           notes are stored locally so it’s fast & secure. Its minimal design is
           intended to keep you in the flow
