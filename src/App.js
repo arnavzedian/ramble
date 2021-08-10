@@ -23,14 +23,14 @@ async function getInitialState() {
 }
 
 let Container = styled.div`
-  background-color: #222;
+  background-color: #111;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
 `;
 
 let ScrollContainer = styled.div`
-  background-color: #222;
+  background-color: #111;
   height: calc(100vh - 50px);
   width: 100vw;
   overflow: hidden;

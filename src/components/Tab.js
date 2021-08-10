@@ -16,7 +16,7 @@ const Container = styled.button`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: ${({ isActive }) => (isActive ? "#111" : "#333")};
+  background-color: ${({ isActive }) => (isActive ? "#000" : "#222")};
 `;
 
 const Name = styled.span`

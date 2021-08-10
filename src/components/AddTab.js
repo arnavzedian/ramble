@@ -2,7 +2,7 @@ import { useContext } from "react";
 import Context from "../Context";
 import styled from "styled-components";
 import { MdAdd } from "react-icons/md";
-
+import addTab from "../controller/addTab";
 const Container = styled.button`
   width: 35px;
   height: 35px;
@@ -16,50 +16,21 @@ const Container = styled.button`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ isActive }) => (isActive ? "#111" : "#333")};
+  background-color: ${({ isActive }) => (isActive ? "#111" : "#222")};
 `;
 
 function AddTab() {
   const { state, dispatch } = useContext(Context);
 
   return (
-    <Container onClick={addTab}>
+    <Container
+      onClick={() => {
+        addTab({ state, dispatch });
+      }}
+    >
       <MdAdd />
     </Container>
   );
-
-  function getDate() {
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
-    var date = new Date();
-    var y = date.getFullYear();
-    var m = date.getMonth();
-    var d = date.getDate();
-    return `${d} ${monthNames[m]} ${y} ${date.getHours()}:${date.getMinutes()}`;
-  }
-
-  function addTab() {
-    let newState = { ...state };
-    let id = Math.random().toString(36).slice(-10);
-    let name = getDate();
-    newState.notes[id] = { name: "", data: "" };
-    newState.selectedNote = id;
-    newState.ranking.unshift(id);
-    dispatch({ type: "NEW_STATE", value: newState });
-  }
 }
 
 export default AddTab;

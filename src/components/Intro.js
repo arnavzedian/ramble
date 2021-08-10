@@ -2,7 +2,8 @@ import Context from "../Context";
 
 import { useContext, useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
-import logo from "../logos/run.svg";
+import logo from "../logos/ramble.svg";
+import addTab from "../controller/addTab";
 
 let Container = styled.div`
   color: #fff;
@@ -26,11 +27,13 @@ let LogoImg = styled.img`
 
 let LogoText = styled.div`
   font-size: 35px;
-  font-family: sacramento;
+  font-weight: 900;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 `;
 
 let Hero = styled.div`
-  margin-top: 100px;
+  margin-top: 75px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -38,22 +41,36 @@ let Hero = styled.div`
 `;
 
 let Heading = styled.h1`
-  width: 100%;
-  font-size: 45px;
+  width: 80%;
+  font-size: 75px;
   text-align: center;
-
+  margin-bottom: 15px;
+  font-family: Sanchez, Georgia, "Times New Roman", Times, serif;
   @media (max-width: 700px) {
     font-size: 25px;
+
     width: 90%;
   }
 `;
 
-let Description = styled.div`
-  font-family: sacramento;
+let HeroButton = styled.h1`
+  width: auto;
+  font-family: Sanchez, Georgia, "Times New Roman", Times, serif;
+  background-color: #fff;
+  color: #111;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 100px;
+  padding: 15px 25px;
+  font-size: 15px;
+`;
 
+let Description = styled.div`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  width: 62%;
   text-align: center;
-  font-size: 35px;
-  width: 38vw;
+  font-size: 25px;
   opacity: 0.5;
 
   @media (max-width: 700px) {
@@ -63,11 +80,13 @@ let Description = styled.div`
 `;
 
 function Intro() {
+  const { state, dispatch } = useContext(Context);
+
   return (
     <Container>
       <Logo>
         <LogoImg src={logo}></LogoImg>
-        <LogoText>run notes</LogoText>
+        <LogoText>Ramble</LogoText>
       </Logo>
 
       <Hero>
@@ -76,6 +95,14 @@ function Intro() {
           notes are stored locally so it’s fast & secure. Its minimal design is
           intended to keep you in the flow
         </Description>
+
+        <HeroButton
+          onClick={() => {
+            addTab({ state, dispatch });
+          }}
+        >
+          + NOTE
+        </HeroButton>
       </Hero>
     </Container>
   );
