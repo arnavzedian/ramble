@@ -44,13 +44,12 @@ let Hero = styled.div`
 
 let Heading = styled.h1`
   width: 80%;
-  font-size: 69px;
+  font-size: 60px;
   text-align: center;
   margin-bottom: 15px;
-  font-family: Sanchez, Georgia, "Times New Roman", Times, serif;
+  font-family: "Playfair Display", Georgia, "Times New Roman", Times, serif;
   @media (max-width: 700px) {
-    font-size: 25px;
-
+    font-size: 20px;
     width: 90%;
   }
 `;
@@ -67,16 +66,32 @@ let HeroButton = styled.h1`
   font-size: 15px;
 `;
 
+let Circles = styled.div`
+  width: 100vw;
+  height: 100vw;
+  color: #fff;
+  border-radius: 100vw;
+  border: 1px solid;
+  position: absolute;
+  top: -25vw;
+  transform: ${({ scale }) => (scale ? `scale(${scale})` : `scale(1)`)};
+  opacity: ${({ opacity }) => (opacity ? opacity : 1)};
+
+  @media (max-width: 700px) {
+    display: none;
+  }
+`;
+
 let Description = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   width: 80%;
   text-align: center;
-  font-size: 25px;
+  font-size: 20px;
   opacity: 0.5;
 
   @media (max-width: 700px) {
-    font-size: 22px;
+    font-size: 17px;
     width: 90%;
   }
 `;
@@ -106,6 +121,10 @@ function Intro() {
           + NOTE
         </HeroButton>
       </Hero>
+
+      <Circles scale={0.7} opacity={0.2} />
+      <Circles scale={0.85} opacity={0.5} />
+      <Circles scale={1} opacity={0.7} />
     </Container>
   );
 }
