@@ -124,9 +124,9 @@ function Intro() {
         </HeroButton>
       </Hero>
 
-      <Circles scale={0.7} opacity={0.2} />
-      <Circles scale={0.85} opacity={0.5} />
-      <Circles scale={1} opacity={0.7} />
+      <Circles scale={0.8} opacity={0.2} />
+      <Circles scale={0.9} opacity={0.3} />
+      <Circles scale={1} opacity={0.5} />
     </Container>
   );
 }

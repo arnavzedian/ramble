@@ -18,6 +18,26 @@ const Button = styled.span`
   }
 `;
 
+const ButtonWithTitle = styled.span`
+  height: 34px;
+  width: 100%;
+
+  font-size: 13px;
+  gap: 25px;
+  padding: 15px;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 0;
+  display: flex;
+
+  color: ${({ isActive }) => (isActive ? "#50CB93" : "#fff")};
+  :hover {
+    background-color: #444;
+  }
+`;
+
+const Span = styled.span``;
+
 function StyleButton({
   RichUtils,
   setEditorState,
@@ -25,6 +45,7 @@ function StyleButton({
   newStyle,
   coverEntireBlock,
   Icon,
+  title,
   callback,
   actionFunction,
 }) {
@@ -33,14 +54,20 @@ function StyleButton({
     return [];
   }
 
+  let TheButton = Button;
+
+  if (title) TheButton = ButtonWithTitle;
+
   return (
-    <Button isActive={checkActive()} onMouseDown={doStyling}>
+    <TheButton isActive={checkActive()} onMouseDown={doStyling}>
       {typeof Icon == "string" ? (
         Icon
       ) : (
         <Icon fill={checkActive() ? "#50CB93" : "#fff"} />
       )}
-    </Button>
+
+      {title ? <Span>{title}</Span> : []}
+    </TheButton>
   );
 
   function styleWholeBlock() {

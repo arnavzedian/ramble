@@ -136,9 +136,13 @@ function MyEditor({ noteID }) {
   let [editorState, updateEditorState] = useState(getState());
   let [focused, setFocus] = useState(false);
 
-  const editor = useRef(null);
+  const editorRef = useRef(null);
 
   let blockRenderMap = null;
+
+  useEffect(() => {
+    if (editorRef.current) focus();
+  }, [editorRef]);
 
   useEffect(() => {
     blockRenderMap = new Map({
@@ -351,7 +355,7 @@ function MyEditor({ noteID }) {
   }
 
   const focus = () => {
-    if (editor.current) editor.current.focus();
+    if (editorRef.current) editorRef.current.focus();
   };
 
   function onTab(e) {
@@ -383,13 +387,18 @@ function MyEditor({ noteID }) {
 
   return (
     <Div data-note_id={noteID}>
-      <Title placeholder={"Title"} onChange={changeName} value={note.name} />
+      <Title
+        onKeyUp={onTitleKeyUp}
+        placeholder={"Title"}
+        onChange={changeName}
+        value={note.name}
+      />
       <Container onClick={focus}>
         <Editor
           editorState={editorState}
           editorKey="SimpleInlineToolbarEditor"
           ref={(element) => {
-            editor.current = element;
+            editorRef.current = element;
           }}
           customStyleMap={customStyleMap}
           onTab={onTab}
@@ -432,13 +441,16 @@ function MyEditor({ noteID }) {
             )
           }
         </InlineToolbar>
-        {/* </div> */}
-        {/* ) : (
-          []
-        )} */}
       </Container>
     </Div>
   );
+
+  function onTitleKeyUp(e) {
+    if (e.which !== 13) return true;
+    if (editorRef.current) {
+      editorRef.current.focus();
+    }
+  }
 }
 
 export default MyEditor;

@@ -37,14 +37,21 @@ const MainContainer = styled.div`
 `;
 
 const ButtonsContainer = styled.div`
-  margin-left: 35px;
+  margin-left: 27px;
   z-index: 55;
   margin-top: -8px;
   display: flex;
   background-color: #111;
   border-radius: 15px;
   transition: 0.2s ease-in;
-  flex-direction: row;
+  flex-direction: column;
+  width: 200px;
+  background-color: #222;
+  height: 200px;
+  overflow: hidden;
+  overflow-y: scroll;
+
+  opacity: ${({ active }) => (active ? "1" : "0")};
   transform: ${({ active }) => (active ? "scale(1)" : "scale(0)")};
 `;
 
@@ -62,7 +69,7 @@ function PlusButton({ editorInFocus, editorState, setEditorState, RichUtils }) {
   setTimeout(() => {
     setPosY(getPositionY());
     setShow(shouldShow());
-  }, 50);
+  }, 10);
 
   if (posY == false) return [];
 
@@ -77,14 +84,24 @@ function PlusButton({ editorInFocus, editorState, setEditorState, RichUtils }) {
 
       <ButtonsContainer active={active}>
         <StyleButton
+          Icon={BiTask}
+          coverEntireBlock={true}
+          callback={callback}
+          title="Todo"
+          newStyle={"todo"}
+          {...{ editorState, setEditorState, RichUtils }}
+        />
+        <StyleButton
           coverEntireBlock={true}
           Icon={"H1"}
+          title="Big Heading"
           callback={callback}
           newStyle={"header-one"}
           {...{ editorState, setEditorState, RichUtils }}
         />
         <StyleButton
           Icon={"H2"}
+          title="Normal Heading"
           callback={callback}
           coverEntireBlock={true}
           newStyle={"header-two"}
@@ -92,22 +109,18 @@ function PlusButton({ editorInFocus, editorState, setEditorState, RichUtils }) {
         />
         <StyleButton
           Icon={"H3"}
+          title="Small Heading"
           coverEntireBlock={true}
           callback={callback}
           newStyle={"header-three"}
           {...{ editorState, setEditorState, RichUtils }}
         />
-        <StyleButton
-          Icon={"H3"}
-          coverEntireBlock={true}
-          callback={callback}
-          newStyle={"header-three"}
-          {...{ editorState, setEditorState, RichUtils }}
-        />
+
         <StyleButton
           Icon={AiOutlineUnorderedList}
           coverEntireBlock={true}
           callback={callback}
+          title="Unordered List"
           newStyle={"unordered-list-item"}
           {...{ editorState, setEditorState, RichUtils }}
         />
@@ -115,6 +128,7 @@ function PlusButton({ editorInFocus, editorState, setEditorState, RichUtils }) {
           Icon={AiOutlineOrderedList}
           coverEntireBlock={true}
           callback={callback}
+          title="Ordered List"
           newStyle={"ordered-list-item"}
           {...{ editorState, setEditorState, RichUtils }}
         />
@@ -123,14 +137,8 @@ function PlusButton({ editorInFocus, editorState, setEditorState, RichUtils }) {
           Icon={CgImage}
           coverEntireBlock={true}
           callback={callback}
+          title="Image"
           actionFunction={imageUploadClicked}
-          {...{ editorState, setEditorState, RichUtils }}
-        />
-        <StyleButton
-          Icon={BiTask}
-          coverEntireBlock={true}
-          callback={callback}
-          newStyle={"todo"}
           {...{ editorState, setEditorState, RichUtils }}
         />
       </ButtonsContainer>
