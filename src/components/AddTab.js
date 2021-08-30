@@ -17,6 +17,11 @@ const Container = styled.button`
   align-items: center;
   justify-content: space-between;
   background-color: ${({ isActive }) => (isActive ? "#111" : "#222")};
+  transition: 0.15s ease-in-out;
+  :hover {
+    height: 60px;
+    padding-bottom: 30px;
+  }
 `;
 
 function AddTab() {

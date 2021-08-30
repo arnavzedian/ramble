@@ -17,6 +17,7 @@ const Container = styled.div`
   overflow-x: auto;
   flex-direction: row;
   padding: 10px 10px;
+  align-items: flex-end;
   opacity: 0.7;
 `;
 

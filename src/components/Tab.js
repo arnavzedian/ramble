@@ -17,6 +17,12 @@ const Container = styled.button`
   justify-content: space-between;
   align-items: center;
   background-color: ${({ isActive }) => (isActive ? "#000" : "#222")};
+  transition: 0.15s ease-in-out;
+
+  :hover {
+    /* height: 60px;
+    padding-bottom: 30px; */
+  }
 `;
 
 const Name = styled.span`
@@ -41,21 +47,23 @@ function Tab({ noteID }) {
 
   let note = state.notes[noteID];
 
-  function isSelected() {}
+  function isSelected() {
+    return noteID == state.selectedNote;
+  }
 
   return (
     <Container
-      isActive={noteID == state.selectedNote}
+      isActive={isSelected()}
       onClick={
         isSelected()
-          ? null
+          ? shouldDelete
           : () => {
               setCurrentNote({ state, dispatch, noteID });
             }
       }
     >
       <Name>{note.name ? note.name : "Untitled"}</Name>
-      {noteID == state.selectedNote ? (
+      {isSelected() ? (
         <Cross onClick={shouldDelete}>
           <MdClose />
         </Cross>
