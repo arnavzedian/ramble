@@ -50,8 +50,7 @@ const ButtonsContainer = styled.div`
   height: 200px;
   overflow: hidden;
   overflow-y: scroll;
-
-  opacity: ${({ active }) => (active ? "1" : "0")};
+  display: ${({ active }) => (active ? "flex" : "none")};
   transform: ${({ active }) => (active ? "scale(1)" : "scale(0)")};
 `;
 

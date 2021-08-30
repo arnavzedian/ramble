@@ -441,6 +441,10 @@ function MyEditor({ noteID }) {
             )
           }
         </InlineToolbar>
+        {/* </div> */}
+        {/* ) : (
+          []
+        )} */}
       </Container>
     </Div>
   );
