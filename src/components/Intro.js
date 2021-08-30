@@ -73,7 +73,9 @@ let Circles = styled.div`
   border-radius: 100vw;
   border: 1px solid;
   position: absolute;
+
   top: -25vw;
+  pointer-events: none;
   transform: ${({ scale }) => (scale ? `scale(${scale})` : `scale(1)`)};
   opacity: ${({ opacity }) => (opacity ? opacity : 1)};
 
