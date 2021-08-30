@@ -134,6 +134,7 @@ const plugins = [inlineToolbarPlugin, imagePlugin];
 function MyEditor({ noteID }) {
   let { state, dispatch } = useContext(Context);
   let [editorState, updateEditorState] = useState(getState());
+  let [focused, setFocus] = useState(false);
 
   const editor = useRef(null);
 
@@ -317,25 +318,29 @@ function MyEditor({ noteID }) {
       .getBlockForKey(selection.getStartKey());
     const blockLength = currentBlock.getLength();
 
-    if (blockLength === 1 && currentBlock.getText() === "*") {
+    let currentBoxText = currentBlock.getText().trim();
+
+    let textLength = currentBoxText.length;
+
+    if (textLength === 1 && currentBoxText === "*") {
       setEditorState(resetBlockType(editorState, "unordered-list-item"));
       return "handled";
-    } else if (blockLength === 1 && currentBlock.getText() === "1") {
+    } else if (textLength === 1 && currentBoxText === "1") {
       setEditorState(resetBlockType(editorState, "ordered-list-item"));
       return "handled";
-    } else if (blockLength === 2 && currentBlock.getText() === "1.") {
+    } else if (textLength === 2 && currentBoxText === "1.") {
       setEditorState(resetBlockType(editorState, "ordered-list-item"));
       return "handled";
-    } else if (blockLength === 1 && currentBlock.getText() === "#") {
+    } else if (textLength === 1 && currentBoxText === "#") {
       setEditorState(resetBlockType(editorState, "header-one"));
       return "handled";
-    } else if (blockLength === 2 && currentBlock.getText() === "##") {
+    } else if (textLength === 2 && currentBoxText === "##") {
       setEditorState(resetBlockType(editorState, "header-two"));
       return "handled";
-    } else if (blockLength === 3 && currentBlock.getText() === "###") {
+    } else if (textLength === 3 && currentBoxText === "###") {
       setEditorState(resetBlockType(editorState, "header-three"));
       return "handled";
-    } else if (blockLength === 2 && currentBlock.getText() === "[]") {
+    } else if (textLength === 2 && currentBoxText === "[]") {
       setEditorState(
         resetBlockType(editorState, TODO_BLOCK, { checked: false })
       );
@@ -388,6 +393,8 @@ function MyEditor({ noteID }) {
           }}
           customStyleMap={customStyleMap}
           onTab={onTab}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
           plugins={plugins}
           blockStyleFn={blockStyleFn}
           blockRendererFn={getBlockRendererFn}
@@ -399,7 +406,10 @@ function MyEditor({ noteID }) {
         />
         {/* {isActive() ? ( */}
         {/* <div> */}{" "}
-        <PlusButton {...{ editorState, setEditorState, RichUtils }} />
+        <PlusButton
+          editorInFocus={focused}
+          {...{ editorState, setEditorState, RichUtils }}
+        />
         <InlineToolbar>
           {
             // may be use React.Fragment instead of div to improve perfomance after React 16

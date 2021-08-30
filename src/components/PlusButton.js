@@ -48,7 +48,7 @@ const ButtonsContainer = styled.div`
   transform: ${({ active }) => (active ? "scale(1)" : "scale(0)")};
 `;
 
-function PlusButton({ editorState, setEditorState, RichUtils }) {
+function PlusButton({ editorInFocus, editorState, setEditorState, RichUtils }) {
   const { state, dispatch, setFormData } = useContext(Context);
   let [active, setActive] = useState(false);
   let [posY, setPosY] = useState(false);
@@ -167,13 +167,16 @@ function PlusButton({ editorState, setEditorState, RichUtils }) {
   }
 
   function shouldShow() {
+    if (!editorInFocus) return false;
+
     let show = true;
     let block = getCurrentBlock(editorState);
     if (block) {
       if (block.getText()) {
-        // console.log(block.getText());
         show = false;
       }
+    } else {
+      show = false;
     }
 
     return show;

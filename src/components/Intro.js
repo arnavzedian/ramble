@@ -111,7 +111,7 @@ function Intro() {
       <Hero>
         <Heading>FAST . MINIMAL . NOTE TAKING</Heading>
         <Description>
-          notes are stored locally so it’s fast & secure. Its minimal design is
+          Notes are stored locally so it’s fast & secure. Its minimal design is
           intended to keep you in the flow
         </Description>
 
